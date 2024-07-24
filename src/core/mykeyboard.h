@@ -11,3 +11,12 @@ bool checkPrevPress();
 bool checkSelPress();
 
 bool checkEscPress();
+
+
+#ifdef CYD
+
+bool checkTouch();
+
+void printTouchToSerial();
+
+#endif

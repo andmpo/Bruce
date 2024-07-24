@@ -8,7 +8,9 @@ bool checkNextPress(){
   #if defined (CARDPUTER)
     Keyboard.update();
     if(Keyboard.isKeyPressed('/') || Keyboard.isKeyPressed('.'))
-  #else    
+  #elif defined (CYD)
+    if( checkTouch())
+  #else  
     if(digitalRead(DW_BTN)==LOW) 
   #endif
   { 
@@ -31,6 +33,8 @@ bool checkPrevPress() {
   #elif defined(CARDPUTER)
     Keyboard.update();
     if(Keyboard.isKeyPressed(',') || Keyboard.isKeyPressed(';'))
+  #elif defined(CYD)
+  if (false) 
   #endif
   { 
     if(wakeUpScreen()){
@@ -71,6 +75,8 @@ bool checkEscPress(){
   #elif defined (CARDPUTER)
     Keyboard.update();
     if(Keyboard.isKeyPressed('`'))
+  #elif defined(CYD)
+  if (false) 
   #endif
   {
     if(wakeUpScreen()){
@@ -571,3 +577,33 @@ String keyboard(String mytext, int maxSize, String msg) {
 
 
 #endif //If not STICK_C
+
+#ifdef CYD
+bool checkTouch(){
+  bool pressed = tft.getTouch(&t_x, &t_y);
+
+  //Serial.println(tft.getTouchRawZ() );
+  if(pressed) {
+    printTouchToSerial();
+  }
+  // if (ts.tirqTouched() && ts.touched())
+  // {
+  //   TS_Point p = ts.getPoint();
+  //   touched = true;
+  //   printTouchToSerial(p);
+  // }
+  // else{
+  //   touched = false;
+  // }
+  return pressed;
+}
+
+void printTouchToSerial() {
+  Serial.print("Touch  x = ");
+  Serial.print(t_x);
+  Serial.print(", y = ");
+  Serial.print(t_y);
+  Serial.println();
+}
+
+#endif
