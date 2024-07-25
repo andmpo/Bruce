@@ -15,7 +15,9 @@ bool checkEscPress();
 
 #ifdef CYD
 
-bool checkTouch();
+bool updateTouch();
+
+bool checkTouchedRegion(int xMin, int xMax);
 
 void printTouchToSerial();
 

@@ -44,18 +44,12 @@ extern uint16_t t_y;
 #endif
 
 #ifdef CYD
-//#include <XPT2046_Touchscreen.h>
-//#define XPT2046_IRQ 36
-//#define XPT2046_MOSI 32
-//#define XPT2046_MISO 39
-//#define XPT2046_CLK 25
-//#define XPT2046_CS 33
-//extern SPIClass mySpi;
-//extern XPT2046_Touchscreen ts;
+
 
 extern uint16_t t_x ;
- 
 extern uint16_t t_y; 
+extern bool touched; 
+extern uint32_t scanTime;
 
 #endif
 

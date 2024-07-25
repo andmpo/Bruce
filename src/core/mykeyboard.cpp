@@ -7,13 +7,12 @@
 bool checkNextPress(){
   #if defined (CARDPUTER)
     Keyboard.update();
-    if(Keyboard.isKeyPressed('/') || Keyboard.isKeyPressed('.'))
+    if(Keyboard.isKeyPressed('/') || Keyboard.isKeyPressed('.')) {
   #elif defined (CYD)
-    if( checkTouch())
+    if( checkTouchedRegion(0,100) ) {
   #else  
-    if(digitalRead(DW_BTN)==LOW) 
+    if(digitalRead(DW_BTN)==LOW) { 
   #endif
-  { 
     if(wakeUpScreen()){
       delay(200);
       return false;
@@ -27,16 +26,16 @@ bool checkNextPress(){
 /* Verifies Down Btn to go to next item */
 bool checkPrevPress() {
   #if defined(STICK_C_PLUS2)
-    if(digitalRead(UP_BTN)==LOW) 
+    if(digitalRead(UP_BTN)==LOW) {
   #elif defined(STICK_C_PLUS)
-    if(axp192.GetBtnPress())
+    if(axp192.GetBtnPress()) {
   #elif defined(CARDPUTER)
     Keyboard.update();
-    if(Keyboard.isKeyPressed(',') || Keyboard.isKeyPressed(';'))
+    if(Keyboard.isKeyPressed(',') || Keyboard.isKeyPressed(';')) {
   #elif defined(CYD)
-  if (false) 
+    if( checkTouchedRegion(220,320) ) {
   #endif
-  { 
+  
     if(wakeUpScreen()){
       delay(200);
       return false;
@@ -52,11 +51,12 @@ bool checkSelPress(){
   checkPowerSaveTime();
   #if defined (CARDPUTER)
     Keyboard.update();
-    if(Keyboard.isKeyPressed(KEY_ENTER) || digitalRead(0)==LOW)
+    if(Keyboard.isKeyPressed(KEY_ENTER) || digitalRead(0)==LOW) {
+  #elif defined(CYD)
+    if( checkTouchedRegion(100,220) ) {
   #else
-    if(digitalRead(SEL_BTN)==LOW) 
+    if(digitalRead(SEL_BTN)==LOW) {
   #endif
-  { 
     if(wakeUpScreen()){
       delay(200);
       return false;
@@ -579,23 +579,25 @@ String keyboard(String mytext, int maxSize, String msg) {
 #endif //If not STICK_C
 
 #ifdef CYD
-bool checkTouch(){
-  bool pressed = tft.getTouch(&t_x, &t_y);
-
-  //Serial.println(tft.getTouchRawZ() );
-  if(pressed) {
-    printTouchToSerial();
+bool updateTouch(){
+  if (millis() - scanTime >= 50) {
+    touched = tft.getTouch(&t_x, &t_y);
+    if(touched) {
+      printTouchToSerial();
+    }
+    scanTime = millis();
   }
-  // if (ts.tirqTouched() && ts.touched())
-  // {
-  //   TS_Point p = ts.getPoint();
-  //   touched = true;
-  //   printTouchToSerial(p);
-  // }
-  // else{
-  //   touched = false;
-  // }
-  return pressed;
+  return touched;
+}
+
+bool checkTouchedRegion(int xMin, int xMax) {
+    updateTouch();
+    if (touched && t_x>= xMin &&  t_x < xMax) {
+      touched = false;
+      return true;
+    } else {
+      return false;
+    } 
 }
 
 void printTouchToSerial() {

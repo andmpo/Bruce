@@ -51,6 +51,9 @@ TFT_eSprite draw = TFT_eSprite(&tft);
 
 uint16_t t_x = 0; 
 uint16_t t_y = 0;  
+bool touched = false;
+uint32_t scanTime = 0;
+
 
 #endif
 
@@ -105,6 +108,9 @@ void setup() {
   else log_d("PSRAM Not Found");
   log_d("Total PSRAM: %d", ESP.getPsramSize());
   log_d("Free PSRAM: %d", ESP.getFreePsram());
+  #ifdef TFT_INVERSION_ON
+    log_w("TFT INVERSION");
+  #endif
 
   // declare variables
   prog_handler=0;
@@ -243,7 +249,7 @@ void loop() {
       redraw=true;
     }
     #ifdef CYD  
-      //checkTouch();
+      //updateTouch();
     #endif
 
     if (redraw) {
