@@ -45,16 +45,10 @@ TFT_eSprite sprite = TFT_eSprite(&tft);
 TFT_eSprite draw = TFT_eSprite(&tft);
 
 #ifdef CYD
-
-//SPIClass mySpi = SPIClass(VSPI);
-//XPT2046_Touchscreen ts(XPT2046_CS, XPT2046_IRQ);
-
 uint16_t t_x = 0; 
 uint16_t t_y = 0;  
 bool touched = false;
 uint32_t scanTime = 0;
-
-
 #endif
 
 #if defined(CARDPUTER)
@@ -92,15 +86,7 @@ void setup_gpio() {
   pinMode(0, INPUT);
   pinMode(10, INPUT);     // Pin that reads the
   #endif
-
-#ifdef CYD
-  //mySpi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
-  //ts.begin(mySpi);
-  //ts.setRotation(1);
-  //tft.println("Setup touch");
-#endif
-
-
+  
   #if defined(BACKLIGHT)
   pinMode(BACKLIGHT, OUTPUT);
   #endif
