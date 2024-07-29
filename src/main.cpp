@@ -44,6 +44,13 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 TFT_eSprite sprite = TFT_eSprite(&tft);
 TFT_eSprite draw = TFT_eSprite(&tft);
 
+#ifdef CYD
+uint16_t t_x = 0; 
+uint16_t t_y = 0;  
+bool touched = false;
+uint32_t scanTime = 0;
+#endif
+
 #if defined(CARDPUTER)
   Keyboard_Class Keyboard = Keyboard_Class();
 #elif defined (STICK_C_PLUS)
@@ -79,7 +86,7 @@ void setup_gpio() {
   pinMode(0, INPUT);
   pinMode(10, INPUT);     // Pin that reads the
   #endif
-
+  
   #if defined(BACKLIGHT)
   pinMode(BACKLIGHT, OUTPUT);
   #endif
@@ -234,6 +241,9 @@ void loop() {
       tft.fillScreen(BGCOLOR); //fix any problem with the mainMenu screen when coming back from submenus or functions
       redraw=true;
     }
+    #ifdef CYD  
+      //updateTouch();
+    #endif
 
     if (redraw) {
       drawMainMenu(index);

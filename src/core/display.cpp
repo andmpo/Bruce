@@ -39,6 +39,10 @@ void setTftDisplay(int x, int y, uint16_t fc, int size, uint16_t bg) {
 ***************************************************************************************/
 void initDisplay(int i) {
   tft.drawXBitmap(1,1,bits, bits_width, bits_height,TFT_BLACK,FGCOLOR+i);
+#ifdef CYD
+   uint16_t calData[5] = { 350, 3465, 188, 3431, 2 };
+   tft.setTouch(calData);
+#endif
 }
 
 /***************************************************************************************
@@ -257,6 +261,7 @@ int getBattery() {
 
   #else
 
+
     #if defined(CARDPUTER)
       uint8_t _batAdcCh = ADC1_GPIO10_CHANNEL;
       uint8_t _batAdcUnit = 1;
@@ -265,6 +270,7 @@ int getBattery() {
       uint8_t _batAdcUnit = 1;
     #endif
 
+    #if defined(CARDPUTER)
     adc1_config_width(ADC_WIDTH_BIT_12);
     adc1_config_channel_atten((adc1_channel_t)_batAdcCh, ADC_ATTEN_DB_12);
     static esp_adc_cal_characteristics_t* adc_chars = nullptr;
@@ -277,6 +283,7 @@ int getBattery() {
 
     float mv = volt * 2;
     percent = (mv - 3300) * 100 / (float)(4150 - 3350);
+    #endif
 
   #endif
   return  (percent < 0) ? 0

@@ -11,3 +11,14 @@ bool checkPrevPress();
 bool checkSelPress();
 
 bool checkEscPress();
+
+
+#ifdef CYD
+
+bool updateTouch();
+
+bool checkTouchedRegion(int xMin, int xMax);
+
+void printTouchToSerial();
+
+#endif
